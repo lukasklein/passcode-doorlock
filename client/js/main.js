@@ -16,6 +16,10 @@ var keylock = (function () {
 					if (data === 'you\'re in') {
 						$('#message').attr('class', 'success');
 						$('#message').text('Open');
+						window.setTimeout(function () {
+							$('#message').attr('class', 'error');
+							$('#message').text('Locked');
+						}, 3000);
 					}
 				},
 				error: function (xhr, textStatus, errorThrown) {
@@ -39,12 +43,13 @@ var keylock = (function () {
 		inter = window.setInterval(function () {
 			locked_for -= 1;
 			$('#message').attr('class', 'wait');
-			$('#message').text('Wait ' + locked_for + ' seconds.');
+			$('#message').text('Wait ' + locked_for + ' seconds');
 			if (locked_for === 0) {
 				window.clearInterval(inter);
 				$('#message').attr('class', 'error');
 				$('#message').text('Locked');
 			}
+			code = '';
 		}, 1000);
 	};
 
