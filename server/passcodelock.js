@@ -1,9 +1,12 @@
 var passcodelock = (function () {
-	var express = require('express'),
-		app = express(),
-		wrongtries = 0,
-		waittill = 0,
-		curcode = '1234';
+	var express					= require('express'),
+		app						= express(),
+		wrongtries				= 0,
+		waittill				= 0,
+		application_root		= __dirname,
+		path					= require('path'),
+		pub_dir					= path.join(application_root, '../client'),
+		curcode					= '1234';
 
 	var run = function () {
 		app.listen(3000);
@@ -15,11 +18,15 @@ var passcodelock = (function () {
 		return;
 	};
 
+	app.configure(function () {
+		app.use(express.static(pub_dir));
+	});
+
 	app.get('/check_code/:code', function (req, res) {
 		if (wrongtries >= 5) {
 			var timediff = waittill - parseInt(new Date().getTime() / 1000, 10);
 			if (timediff > 0) {
-				res.send(500, 'wait_' + timediff);
+				res.send(403, 'wait_' + timediff);
 				return;
 			}
 		}
@@ -54,7 +61,7 @@ var passcodelock = (function () {
 					break;
 			}
 			wrongtries += 1;
-			res.send(500, 'Fail.');
+			res.send(403, 'Fail.');
 			return;
 		}
 	});
