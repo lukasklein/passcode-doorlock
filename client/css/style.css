@@ -1,5 +1,6 @@
 body {
 	margin: 0;
+	font-family: 'Helvetica Neue';
 }
 
 #main {
@@ -7,4 +8,51 @@ body {
 	background-size: 320px 480px;
 	width: 320px;
 	height: 480px;
+	position: relative;
+}
+
+#message {
+	position: absolute;
+	top: 65px;
+	left: 20px;
+	width: 280px;
+	height: 70px;
+	line-height: 70px;
+	text-align: center;
+}
+
+#message.success {
+	font-size: 50px;
+	color: #00ff00;
+}
+
+#message.error {
+	font-size: 40px;
+	color: #ff0000;
+}
+
+#message.wait {
+	font-size: 30px;
+	color: #ff0000;
+}
+
+#message.error, #message.success {
+	-webkit-animation: pulsate 1s ease;
+    -webkit-animation-iteration-count: 2;
+}
+
+#message.code {
+	color: #fff;
+	font-size: 150px;
+	line-height: 55px;
+	letter-spacing: 30px;
+	width: 260px;
+	padding: 0 10px;
+	text-align: left;
+}
+
+@-webkit-keyframes pulsate {
+    0% {opacity: 0;}
+    50% {opacity: 1.0;}
+    100% {opacity: 0;}
 }

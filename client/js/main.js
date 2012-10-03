@@ -3,6 +3,10 @@ var keylock = (function () {
 
 	var pressKey = function (key) {
 		code += key;
+
+		$('#message').addClass('code');
+		$('#message').html(Array(code.length + 1).join('&middot;'));
+
 		if (code.length == 4) {
 			alert(code);
 			code = '';
