@@ -1,0 +1,10 @@
+body {
+	margin: 0;
+}
+
+#main {
+	background: url(../img/background.png) no-repeat;
+	background-size: 320px 480px;
+	width: 320px;
+	height: 480px;
+}
