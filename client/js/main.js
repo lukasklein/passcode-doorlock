@@ -1,8 +1,81 @@
 var keylock = (function () {
 	var code = '',
-		server = 'http://localhost:3000/check_code/';
+		server = 'http://127.0.0.1:3000/';
 
 	var pressKey = function (key) {
+		if (key === 10) { // Knock
+			$.ajax({
+				type: 'GET',
+				url: server + 'knock/'
+			});
+			return;
+		} else if (key === 12) { // Leave message
+			$('body').append(
+				$('<div/>').attr('id', 'message-overlay').append(
+					$('<textarea/>')
+						.css({
+							position: 'absolute',
+							left: 0,
+							top: -3,
+							padding: '5px',
+							width: '310px',
+							height: '135px'
+						})
+						.attr('id', 'messagearea')
+						.blur(function () {
+							$(this).focus();
+						})
+					).append(
+						$('<div/>')
+							.css({
+								position: 'absolute',
+								top: '143px',
+								left: 0,
+								height: '60px',
+								width: '160px',
+								'background-color': '#ccc',
+								border: '1px solid #aaa',
+								'line-height': '60px',
+								'text-align': 'center'
+							})
+							.text('Send')
+							.click(function () {
+								alert($('#messagearea').val());
+								$('#message-overlay').remove();
+							})
+					).append(
+						$('<div/>')
+							.css({
+								position: 'absolute',
+								top: '143px',
+								left: '160px',
+								height: '60px',
+								width: '160px',
+								'background-color': '#ccc',
+								border: '1px solid #aaa',
+								'line-height': '60px',
+								'text-align': 'center'
+							})
+							.text('Cancel')
+							.click(function () {
+								$('#message-overlay').remove();
+							})
+					).append(
+						$('<div/>')
+							.css({
+								position: 'absolute',
+								top: '205px',
+								left: 0,
+								height: '257px',
+								width: '320px',
+								'background-color': '#ccc'
+							})
+					)
+			);
+			$('#messagearea').focus();
+			return;
+		}
+
 		code += key;
 
 		$('#message').addClass('code');
@@ -11,7 +84,7 @@ var keylock = (function () {
 		if (code.length == 4) {
 			$.ajax({
 				type: 'GET',
-				url: server+code,
+				url: server + 'check_code/' + code,
 				success: function (data) {
 					if (data === 'you\'re in') {
 						$('#message').attr('class', 'success');
@@ -27,6 +100,10 @@ var keylock = (function () {
 					if (data === 'Fail.') {
 						$('#message').attr('class', 'error');
 						$('#message').text('Wrong code');
+						window.setTimeout(function () {
+							$('#message').attr('class', 'error');
+							$('#message').text('Locked');
+						}, 3000);
 					} else if (data.indexOf('wait_') != -1) {
 						$('#message').attr('class', 'error');
 						$('#message').text('Wrong code');
@@ -62,7 +139,7 @@ $(function () {
 	var start = [10, 200],
 		size = [100, 70];
 
-	$('body').mousedown(function (e) {
+	$('#main').bind('click', function (e) {
 		var column = parseInt((e.offsetX - start[0]) / size[0], 10),
 			row = (e.offsetY - start[1]) / size[1];
 		if (row < 0) {

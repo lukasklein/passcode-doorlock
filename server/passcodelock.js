@@ -6,6 +6,7 @@ var passcodelock = (function () {
 		application_root		= __dirname,
 		path					= require('path'),
 		pub_dir					= path.join(application_root, '../client'),
+		exec					= require('child_process').exec,
 		curcode					= '1234';
 
 	var run = function () {
@@ -20,6 +21,11 @@ var passcodelock = (function () {
 
 	app.configure(function () {
 		app.use(express.static(pub_dir));
+	});
+
+	app.get('/knock', function (req, res) {
+		exec('say "Knock knock!"');
+		res.send('Knock knock!');
 	});
 
 	app.get('/check_code/:code', function (req, res) {

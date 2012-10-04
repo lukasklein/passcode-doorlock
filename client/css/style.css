@@ -1,6 +1,7 @@
 body {
 	margin: 0;
 	font-family: 'Helvetica Neue';
+	height: 480px;
 }
 
 #main {
@@ -9,6 +10,7 @@ body {
 	width: 320px;
 	height: 480px;
 	position: relative;
+	top: -20px;
 }
 
 #message {
@@ -49,6 +51,10 @@ body {
 	width: 260px;
 	padding: 0 10px;
 	text-align: left;
+}
+
+#messagearea {
+	font-size: 18px;
 }
 
 @-webkit-keyframes pulsate {
